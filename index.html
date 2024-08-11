@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Excel/Sheets</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+      body {
+        text-align: center;
+        font-family: "Gupter", serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      textarea {
+        width: 80%;
+        margin: 0 auto;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        resize: vertical;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+      }
+
+      #hero {
+        padding: 1vw 5vw;
+        width: 100%;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div id="head">
+        <h1>To Excel</h1>
+      </div>
+
+      <div id="hero">
+        <h4>Easily Convert your Data to Excel</h4>
+        <h4>
+          Copy paste your table in your Excel File or
+          <a href="https://workspace.google.com/intl/en_in/products/sheets/"
+            >Google Sheets</a
+          >
+        </h4>
+        <h4>
+          Transpose Buttons allows you to Change The Orientation of the data
+        </h4>
+      </div>
+    </div>
+    <h2>Enter Your Data</h2>
+    <textarea
+      id="arrayInput"
+      rows="5"
+      placeholder="Enter 2D array data, each row separated by a newline, and each value by a comma..." defa
+    ></textarea>
+    <br />
+    <button onclick="generateTable()">Generate Table</button>
+    <button onclick="transposeTable()">Transpose Table</button>
+
+    <div id="tableContainer"></div>
+
+    <script>
+      
+      let currentArray = [""];
+
+      window.onload(function(){
+        generateTable();
+      })
+
+      function generateTable() {
+        const input = document.getElementById("arrayInput").value;
+
+        currentArray = input.split("\n").map((row) => row.split(","));
+
+        const tableHTML = arrayToTable(currentArray);
+
+        document.getElementById("tableContainer").innerHTML = tableHTML;
+      }
+
+      function transposeTable() {
+        const transposedArray = currentArray[0].map((_, colIndex) =>
+          currentArray.map((row) => row[colIndex])
+        );
+
+        const tableHTML = arrayToTable(transposedArray);
+
+        document.getElementById("tableContainer").innerHTML = tableHTML;
+      }
+
+      function arrayToTable(array) {
+        let table = "<table>";
+
+        table += "<tr>";
+        for (let header of array[0]) {
+          table += `<th>${header.trim()}</th>`;
+        }
+        table += "</tr>";
+
+        for (let i = 1; i < array.length; i++) {
+          table += "<tr>";
+          for (let cell of array[i]) {
+            table += `<td>${cell.trim()}</td>`;
+          }
+          table += "</tr>";
+        }
+
+        table += "</table>";
+        return table;
+      }
+    </script>
+  </body>
+</html>
